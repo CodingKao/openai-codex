@@ -9,8 +9,8 @@ Codex, exclusively designed for developers, is a ChatGPT-inspired solution. It s
 - React
 - Vitejs
 - Node.js
-- Tailwind CSS
-- React Icons
+- Express
+- Nodemon
 - OpenAI API
 - Netlify
 
