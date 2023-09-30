@@ -25,7 +25,7 @@ function typeText(element, text) {
 
   let interval = setInterval(() => {
     if(index < text.length) {
-      elementinnerHTML += text.chartAt(index);
+      elementinnerHTML += text.charAt(index);
       index++;
     } else {
       clearInterval(interval);
@@ -34,7 +34,7 @@ function typeText(element, text) {
 }
 
 function generateUniqueId() {
-  const timestamp = Data.now();
+  const timestamp = Date.now();
   const randomNumber = Math.random();
   const hexadecimalString = randomNumber.toString(16);
 
@@ -81,7 +81,32 @@ const handleSubmit = async (e) => {
   const messageDiv = document.getElementById(uniqueId);
 
   // messageDiv.innerHTML = "..."
-  loader(messageDiv);
+  loader(messageDiv)
+
+  const response = await fetch('http://localhost:5000', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+          prompt: data.get('prompt')
+      })
+  })
+
+  clearInterval(loadInterval)
+  messageDiv.innerHTML = " "
+
+  if (response.ok) {
+      const data = await response.json();
+      const parsedData = data.bot.trim() 
+
+      typeText(messageDiv, parsedData)
+  } else {
+      const err = await response.text()
+
+      messageDiv.innerHTML = "Something went wrong"
+      alert(err)
+  }
 }
 
 form.addEventListener('submit', handleSubmit);
